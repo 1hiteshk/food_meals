@@ -21,33 +21,49 @@ const Body = (
   const [searchText, setSearchText] = useState("");
   const { user, setUser } = useContext(userContext);
   const [geolocation, setGeoLocation] = useState();
+  const [showShimmer, setShowShimmer] = useState(false);
 
   const DATA_LINKS = constants();
   const FETCH_SWIGGY_DAPI = DATA_LINKS.SWIGGY_DAPI;
   const FETCH_SWIGGY_MAPI = DATA_LINKS.SWIGGY_MAPI;
 
-  useEffect(() => {}, []);
+/*   useEffect(() => {
+    getRestaurants(FETCH_SWIGGY_DAPI,FETCH_SWIGGY_MAPI);
+
+    window.addEventListener("scroll", handleScroll);
+    // whenever we are adding event listener to our page we should make sure to clean it up
+        return () => window.removeEventListener("scroll", handleScroll);
+  }, []); */
 
   useEffect(() => {
-    getRestaurants();
+    getRestaurants(FETCH_SWIGGY_DAPI,FETCH_SWIGGY_MAPI);
   }, [FETCH_SWIGGY_DAPI]);
 
-  const getRestaurants = async () => {
+ /*  const handleScroll = () => {
+    //scrollY - how much I have scrolled
+    // innerHeight - heigh of the window(visible section)
+    // document.body.scrollHeight - total height of the web page
+    // used for infinite scroll
+    if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+      getRestaurants(FETCH_SWIGGY_DAPI,FETCH_SWIGGY_MAPI);
+    }
+  }; */
+
+  const getRestaurants = async (DAPI,MAPI) => {
+    setShowShimmer(true); // when fetching data show loading screen, also when loading data onScroll at bottom
     const REST_URL =
-      window.innerWidth >= 480 ? FETCH_SWIGGY_DAPI : FETCH_SWIGGY_MAPI;
+      window.innerWidth >= 480 ? DAPI : MAPI;
     console.log(REST_URL);
     const data = await fetch(REST_URL);
     console.log(data, "hehehe");
     // console.log("api call bani useEffect me", geolocation.latitude);
     const json = await data.json();
     console.log(json);
-    setAllRestaurants(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
+    const rest = json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants ;
+    setShowShimmer(false); // when as soon as api call is made we got response, make shimmer load false
+    setAllRestaurants(rest);
     console.log(allRestaurants);
-    setFilteredRestaurants(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
+    setFilteredRestaurants(rest);
   };
 
   const isOnline = useOnline();
@@ -105,23 +121,9 @@ const Body = (
           />
         </div>
 
-        {/* <input value={user.name} onChange={
-          e => setUser({
-            ...user,
-            name: e.target.value,
-          })
-        }></input>
-         <input value={user.email} onChange={
-          e => setUser({
-            ...user,
-            email: e.target.value,
-          })
-        }></input> */}
+     
       </div>
-      <div>
-        {/* hi {location.loaded ? JSON.stringify(location) : "location not available"}
-        hii {location.coordinates.lat} */}
-      </div>
+     
       <div className="flex flex-col md:flex-row items-center md:flex-wrap gap-2 my-2 md:my-0 justify-center">
         {/* You have to write logic for NO restraunt fount here */}
         {filteredRestaurants?.map((restaurant) => {
@@ -134,6 +136,7 @@ const Body = (
             </Link>
           );
         })}
+        {showShimmer && <Shimmer />}
       </div>
     </div>
   );

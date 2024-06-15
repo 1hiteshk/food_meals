@@ -8,7 +8,7 @@ const ButtonGroup = ({allRestaurants,filteredRestaurants,setFilteredRestaurants}
     "Snacks","Coffee","North Indian","South Indian","Veg","Non-Veg",
     "Vegetarian","Non-Vegetarian","Spicy","Non-Spicy"
   ];
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState();
  
 
   return (
