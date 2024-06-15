@@ -51,7 +51,7 @@ class About extends Component {
       <h3 className="m-3 font-bold text-yellow-400 justify-center">Tools & Technology:  </h3>
         <ul>
             <li className="ml-7 p-1 font-bold text-gray-500 justify-center list-disc">Programming Languages: HTML, CSS, JavaScript </li>
-            <li className="ml-7 p-1 font-bold text-gray-500 justify-center list-disc">Frontend Framework: React </li>
+            <li className="ml-7 p-1 font-bold text-gray-500 justify-center list-disc">Frontend Framework: Next JS , React JS </li>
             <li className="ml-7 p-1 font-bold text-gray-500 justify-center list-disc">Version Control: Git </li>
         </ul>
       </div>

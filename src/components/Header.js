@@ -7,7 +7,6 @@ import userContext from "../utils/userContext";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../utils/store";
 
-
 const Title = () => (
   <a href="/">
     <img
@@ -20,76 +19,48 @@ const Title = () => (
 
 const Header = () => {
   const token = localStorage.getItem("token");
-   // use useState for user logged in or logged out
-   const [isLoggedin, setIsLoggedin] = useState(
+  // use useState for user logged in or logged out
+  const [isLoggedin, setIsLoggedin] = useState(
     token?.length === 100 ? true : false
   );
   const navigate = useNavigate();
-
   const [city, setCity] = useState("");
-
   const isOnline = useOnline();
-
   const { user } = useContext(userContext);
-
   const cartItems = useSelector((store) => store.cart.items);
-  // console.log(cartItems);
-
- 
-
   const path = useLocation();
-  // console.log(path.state?.data)
+  console.log(path)
   const isLogin = path.state?.data;
 
-  useEffect(() => {
-    
-  },[isLogin]);
+  useEffect(() => {}, [isLogin]);
 
   return (
     <div className="sticky z-50 top-0 w-full flex justify-between items-center px-2 lg:px-6 md:px-8 py-1 shadow bg-[#fd9133] text-white">
       <Title />
       <ul className="flex gap-5 lg:gap-6 md:gap-12 text-sm font-medium">
-        {/* <li> <input  type="text"
-          className="lg:w-64 md:w-50  h-6 text-md text-black border-b-2  border-gray-900 bg-white focus:bg-[#fd9133]  transition-all duration-300 px-2 rounded"
-          placeholder="your location"
-          value={city}
-          onChange={(e) => {
-            setCity(e.target.value);
-          }}
-       />
-       </li>
-    
-      <svg 
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        class="h-5 w-5">
-        <path
-          fill-rule="evenodd"
-          d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-          clip-rule="evenodd" />
-      </svg> */}
+       
+        <Link
+          to="/"
+          className={`  hover:text-orange-900 hover:bg-gray-200 hover:rounded px-1  transition-all duration-300 ease-in-out `}
+        >
+          <li>Home</li>
+        </Link>
 
-      <Link to="/" className=" hover:text-orange-900 hover:bg-gray-200 hover:rounded px-1  transition-all duration-300 ease-in-out">
-            <li>Home</li>
-          </Link>
-        
-
-      <Link
+        <Link
           to="/about"
-          className=" hover:text-orange-900 hover:bg-gray-200 hover:rounded px-1  transition-all duration-300 ease-in-out"
+          className={` ${path.pathname==='/about' && `bg-gray-200 text-orange-900 rounded` } hover:text-orange-900 hover:bg-gray-200 hover:rounded px-1  transition-all duration-300 ease-in-out`}
         >
           <li>About</li>
         </Link>
 
-      <Link
+        <Link
           to="/instamart"
-          className=" hover:text-orange-900 hover:bg-gray-200 hover:rounded px-1  transition-all duration-300 ease-in-out"
+          className={` ${path.pathname==='/instamart' && `bg-gray-200 text-orange-900 rounded` } hover:text-orange-900 hover:bg-gray-200 hover:rounded px-1  transition-all duration-300 ease-in-out`}
         >
           <li>Instamart</li>
-      </Link>
-      <li>
-        <Link to="/cart" className="relative ">
+        </Link>
+        <li>
+          <Link to="/cart" className={` ${path.pathname==='/cart' && `bg-gray-200 text-orange-900 rounded` } relative `}>
             <i className="fa-solid fa-cart-shopping">
               <span
                 className="absolute top-[-8px] right-[-12px] bg-white text-yellow-400 w-4 p-1  h-4 rounded-full text-[10px] flex justify-center items-center"
@@ -103,23 +74,27 @@ const Header = () => {
 
         <li>
           {/* use conditional rendering for login and logout */}
-            {isLoggedin ? (
-              <button
-                className="logout-btn"
-                onClick={() => {
-                  localStorage.removeItem('token');
-                  setIsLoggedin(!isLoggedin);
-                }}
-              >
-                Logout
-              </button>
-            ) : (
-              <button className="login-btn" onClick={() => {navigate("/login", {state: {data: isLoggedin}})
-              setIsLoggedin(!isLoggedin);
-              }}>
-                login
-              </button>
-            )}
+          {isLoggedin ? (
+            <button
+              className="logout-btn"
+              onClick={() => {
+                localStorage.removeItem("token");
+                setIsLoggedin(!isLoggedin);
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              className="login-btn"
+              onClick={() => {
+                navigate("/login", { state: { data: isLoggedin } });
+                setIsLoggedin(!isLoggedin);
+              }}
+            >
+              login
+            </button>
+          )}
         </li>
       </ul>
       {/* <ul>
